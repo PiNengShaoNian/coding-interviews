@@ -1,22 +1,11 @@
-export const duplicate = (numbers: number[]): boolean => {
-  if (!numbers.length) return false
+class Singleton {
+  private constructor() {}
 
-  for (let i = 0; i < numbers.length; i++) {
-    if (numbers[i] < 0 || numbers[i] >= numbers.length) {
-      return false
-    }
+  private static instance: Singleton | null = null
+
+  static Instance(): Singleton {
+    if (!this.instance) this.instance = new Singleton()
+
+    return this.instance
   }
-
-  for (let i = 0; i < numbers.length; i++) {
-    while (i !== numbers[i]) {
-      const m = numbers[i]
-
-      if (numbers[m] === m) return true
-      const temp = numbers[m]
-      numbers[i] = temp
-      numbers[m] = m
-    }
-  }
-
-  return false
 }
