@@ -5,7 +5,7 @@ class BinaryTreeNode<Value> {
   constructor(public value: Value) {}
 }
 
-const buildTree = (
+export const buildTree = (
   preorder: number[],
   inorder: number[]
 ): BinaryTreeNode<number> | null => {
