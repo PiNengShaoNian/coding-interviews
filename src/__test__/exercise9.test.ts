@@ -1,17 +1,5 @@
 import StackQueue from '../exercise9'
-
-const generateArr = <Value>(
-  size: number,
-  fn: (i: number) => Value
-): Value[] => {
-  const res = []
-
-  for (let i = 0; i < size; i++) {
-    res.push(fn(i))
-  }
-
-  return res
-}
+import generateArr from '../util/generateArr'
 
 describe('LoopQueue测试', () => {
   test('enqueue方法正常工作', () => {
