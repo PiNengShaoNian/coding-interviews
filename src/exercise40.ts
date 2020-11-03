@@ -54,11 +54,12 @@ export const getLeastNumbersSolution1 = (
   numbers: number[],
   k: number
 ): number[] => {
+  if(k <= 0) return []
   const maxPQ = new MaxPQ<number>()
   for (let i = 0; i < numbers.length; i++) {
     if (maxPQ.size() < k) {
       maxPQ.insert(numbers[i])
-    } else if (numbers[i] < maxPQ.max()) {
+    } else if (numbers[i] < maxPQ.max()!) {
       maxPQ.deleteMax()
       maxPQ.insert(numbers[i])
     }

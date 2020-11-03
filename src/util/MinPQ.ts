@@ -1,6 +1,6 @@
 import Comparable from '../model/Comparable'
 
-class MaxPQ<E extends Comparable<E> | number | string> {
+class MinPQ<E extends number | string | Comparable<E>> {
   private pq: E[] = []
 
   private N = 0
@@ -15,35 +15,47 @@ class MaxPQ<E extends Comparable<E> | number | string> {
 
   insert(v: E) {
     this.pq[++this.N] = v
+
     this.swim(this.N)
   }
 
-  max(): E | null {
+  swim(k: number) {
+    let j
+
+    while (k > 1 && this.less(k, (j = Math.floor(k / 2)))) {
+      this.exch(j, k)
+      k = j
+    }
+  }
+
+  min(): E | null {
     if (this.isEmpty()) return null
     return this.pq[1]
   }
 
-  private swim(k: number) {
-    let j
-    while (k > 1 && this.less((j = Math.floor(k / 2)), k)) {
-      this.exch(k, j)
-      k = j
-    }
+  deleteMin(): E {
+    const min = this.pq[1]
+    this.exch(1, this.N--)
+    this.pq.length = this.N + 1
+    this.sink(1)
+    return min
   }
 
-  private sink(k: number) {
+  sink(k: number) {
     while (2 * k <= this.N) {
       let j = 2 * k
 
-      if (j < this.N && this.less(j, j + 1)) j++
-      if (!this.less(k, j)) break
+      if (j < this.N && this.less(j + 1, j)) j++
 
-      this.exch(k, j)
+      if (this.less(k, j)) break
+
+      this.exch(j, k)
+
       k = j
     }
   }
 
-  private less(a: number, b: number): boolean {
+  less(a: number, b: number): boolean {
     if (typeof this.pq[a] === 'string' || typeof this.pq[a] === 'number') {
       return this.pq[a] < this.pq[b]
     } else {
@@ -51,19 +63,11 @@ class MaxPQ<E extends Comparable<E> | number | string> {
     }
   }
 
-  private exch(i: number, j: number) {
+  exch(i: number, j: number) {
     const t = this.pq[i]
     this.pq[i] = this.pq[j]
     this.pq[j] = t
   }
-
-  deleteMax() {
-    const max = this.pq[1]
-    this.exch(1, this.N--)
-    this.pq.length = this.N + 1
-    this.sink(1)
-    return max
-  }
 }
 
-export default MaxPQ
+export default MinPQ
